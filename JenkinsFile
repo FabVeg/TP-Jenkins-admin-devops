@@ -39,6 +39,33 @@ pipeline {
                 }
             }
         }
+        
+        stage('Construire l\'image Docker') {
+            steps {
+                script {
+                    dir('TP-Jenkins-admin-devops') {
+                        // Construire l'image Docker
+                        sh 'docker build -t TP-Jenkins-admin-devops .'
+                    }
+                }
+            }
+        }
+
+        stage('Pousser l\'image Docker') {
+            steps {
+                script {
+                    dir('TP-Jenkins-admin-devops') {
+                        // Pousser l'image Docker sur Docker Hub (ou un autre registre)
+                        withCredentials([usernamePassword(credentialsId: 'docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                            sh '''
+                                echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+                                docker push TP-Jenkins-admin-devops
+                            '''
+                        }
+                    }
+                }
+            }
+        }
 
         stage('Nettoyage') {
             steps {
