@@ -32,9 +32,9 @@ pipeline {
         stage('Exécution des tests') {
             steps {
                 script {
-                    // Lancer les tests avec pytest
-                    dir('ton-repository') {
-                        sh 'unittest'  // Utilise unittest pour les tests
+                // Naviguer dans le répertoire contenant les tests
+                dir('TP-Jenkins-admin-devops') {  // Assurez-vous que c'est le bon répertoire
+                    sh 'python -m unittest discover'
                     }
                 }
             }
