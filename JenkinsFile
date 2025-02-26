@@ -10,6 +10,8 @@ pipeline {
         stage('Cloner le code') {
             steps {
                 script {
+                    // Supprimer le répertoire existant si nécessaire
+                    sh 'rm -rf TP-Jenkins-admin-devops'
                     // Cloner le dépôt depuis GitHub sans utiliser SCM Jenkins
                     sh 'git clone --branch ${BRANCH} ${GIT_REPO}'
                 }
