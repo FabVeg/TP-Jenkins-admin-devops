@@ -22,7 +22,7 @@ pipeline {
             steps {
                 script {
                     // Naviguer dans le répertoire du code cloné et installer les dépendances
-                    dir('ton-repository') {
+                    dir('TP-Jenkins-admin-devops') {
                         sh 'pip install -r requirements.txt'  // Assure-toi d'avoir un fichier requirements.txt
                     }
                 }
