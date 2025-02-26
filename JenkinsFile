@@ -44,7 +44,7 @@ pipeline {
             steps {
                 script {
                     // Nettoyer les fichiers clonés après les tests
-                    sh 'rm -rf ton-repository'
+                    sh 'rm -rf TP-Jenkins-admin-devops'
                 }
             }
         }
