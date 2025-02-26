@@ -1,37 +1,59 @@
 pipeline {
     agent any
 
+    environment {
+        GIT_REPO = 'https://github.com/FabVeg/TP-Jenkins-admin-devops.git'  // Remplace par l'URL de ton dépôt GitHub
+        BRANCH = 'main'  // Remplace par la branche que tu veux utiliser
+    }
+
     stages {
-        stage('Checkout') {
-            steps {
-                // Récupère le code source depuis le repo Git
-                git branch: 'main', url: 'https://github.com/FabVeg/TP-Jenkins-admin-devops.git'
-            }
-        }
-
-        stage('Setup Python') {
+        stage('Cloner le code') {
             steps {
                 script {
-                    // Installe Python et les dépendances si nécessaire
-                    sh 'python3 -m venv venv'
-                    sh 'source venv/bin/activate && pip install -r requirements.txt || echo "No dependencies"'
+                    // Cloner le dépôt depuis GitHub sans utiliser SCM Jenkins
+                    sh 'git clone --branch ${BRANCH} ${GIT_REPO}'
                 }
             }
         }
 
-        stage('Run Tests') {
+        stage('Installation des dépendances') {
             steps {
                 script {
-                    // Exécute les tests unitaires
-                    sh 'source venv/bin/activate && python -m unittest discover -s . -p "test_*.py"'
+                    // Naviguer dans le répertoire du code cloné et installer les dépendances
+                    dir('ton-repository') {
+                        sh 'pip install -r requirements.txt'  // Assure-toi d'avoir un fichier requirements.txt
+                    }
                 }
             }
         }
 
-        stage('Cleanup') {
+        stage('Exécution des tests') {
             steps {
-                sh 'rm -rf venv' // Nettoyage après exécution
+                script {
+                    // Lancer les tests avec pytest
+                    dir('ton-repository') {
+                        sh 'unittest'  // Utilise unittest pour les tests
+                    }
+                }
             }
+        }
+
+        stage('Nettoyage') {
+            steps {
+                script {
+                    // Nettoyer les fichiers clonés après les tests
+                    sh 'rm -rf ton-repository'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Les tests ont réussi !'
+        }
+        failure {
+            echo 'Les tests ont échoué.'
         }
     }
 }
