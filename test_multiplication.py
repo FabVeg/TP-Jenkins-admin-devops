@@ -1,21 +1,26 @@
-# fichier test_multiplication.py
+# fichier test_rectangle.py
 import unittest
-from multiplication import multiply
+from rectangle import area_rectangle
 
-class TestMultiplication(unittest.TestCase):
-    def test_multiply(self):
-        self.assertEqual(multiply(2, 3), 6)
-        self.assertEqual(multiply(-1, 5), -5)
-        self.assertEqual(multiply(0, 10), 0)
-        self.assertEqual(multiply(7, 7), 49)
+class TestRectangleArea(unittest.TestCase):
+    def test_area_rectangle(self):
+        self.assertEqual(area_rectangle(2, 3), 6)
+        self.assertEqual(area_rectangle(5, 5), 25)
+        self.assertEqual(area_rectangle(10, 2), 20)
     
-    def test_multiply_invalid_input(self):
+    def test_area_rectangle_invalid_input(self):
         with self.assertRaises(ValueError):
-            multiply("a", 3)
+            area_rectangle("a", 3)
         with self.assertRaises(ValueError):
-            multiply(2, "b")
+            area_rectangle(2, "b")
         with self.assertRaises(ValueError):
-            multiply("x", "y")
+            area_rectangle("x", "y")
+        with self.assertRaises(ValueError):
+            area_rectangle(-2, 3)
+        with self.assertRaises(ValueError):
+            area_rectangle(2, -3)
+        with self.assertRaises(ValueError):
+            area_rectangle(0, 3)
 
 if __name__ == "__main__":
     unittest.main()
